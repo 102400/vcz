@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -21,7 +22,13 @@ public class CAPTCHA extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		String s = "abcdefg";
+		String d = "qwertyuiopasdfghjklzxcvbnm0123456789QWERTYUIOPASDFGHJKLZXCVBNM";
+		Random r = new Random();
+		String s = "";
+		for(int i=0;i<6;i++) {
+			s = s + d.charAt(r.nextInt(d.length()));
+		}
+//		String s = "abcdefg";
 
 		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = (Graphics2D)bi.getGraphics();

@@ -6,14 +6,6 @@
     <location>/WEB-INF/errors/404.jsp</location>
   </error-page>
   <servlet>
-    <servlet-name>Index</servlet-name>
-    <servlet-class>servlet.Index</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>IndexNL</servlet-name>
-    <servlet-class>servlet.IndexNL</servlet-class>
-  </servlet>
-  <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>servlet.Login</servlet-class>
   </servlet>
@@ -73,14 +65,6 @@
     <servlet-name>settings</servlet-name>
     <jsp-file>/settings.jsp</jsp-file>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>Index</servlet-name>
-    <url-pattern>/Index</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>IndexNL</servlet-name>
-    <url-pattern>/IndexNL</url-pattern>
-  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
     <url-pattern>/Login</url-pattern>

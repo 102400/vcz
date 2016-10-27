@@ -1,3 +1,4 @@
+<%@page import="util.JDBC"%>
 <%@page import="rule.VerifySource"%>
 <%@page import="util.MD5"%>
 <%@page import="com.mysql.jdbc.Driver"%>
@@ -29,12 +30,8 @@ Statement stmt = null;
 ResultSet rs = null;
 
 try {
-	DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-	conn = DriverManager.getConnection(
-			"jdbc:mysql://localhost:3306/vcz",
-			"vcz",
-			"VcZpaSSwORd"
-			);
+	conn = JDBC.getConnection();
+	
 	stmt = conn.createStatement();
 	
 	String question_name = "";
@@ -300,15 +297,7 @@ catch(SQLException e) {
 	response.sendError(404);
 }
 finally {
-	if(rs!=null) {
-		rs.close();
-	}
-	if(stmt!=null) {
-		stmt.close();
-	}
-	if(conn!=null) {
-		conn.close();
-	}
+	JDBC.release(conn, stmt, rs);
 }
 }
 
@@ -342,12 +331,8 @@ if("POST".equals(request.getMethod())) {
 	ResultSet rs = null;
 
 	try {
-		DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-		conn = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/vcz",
-				"vcz",
-				"VcZpaSSwORd"
-				);
+		conn = JDBC.getConnection();
+		
 		stmt = conn.createStatement();
 		
 		StringBuilder sql = new StringBuilder();
@@ -380,15 +365,7 @@ if("POST".equals(request.getMethod())) {
 		response.sendError(404);
 	}
 	finally {
-		if(rs!=null) {
-			rs.close();
-		}
-		if(stmt!=null) {
-			stmt.close();
-		}
-		if(conn!=null) {
-			conn.close();
-		}
+		JDBC.release(conn, stmt, rs);
 	}
 	
 	response.sendRedirect(request.getRequestURL() + "");

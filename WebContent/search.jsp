@@ -1,3 +1,4 @@
+<%@page import="util.JDBC"%>
 <%@page import="com.mysql.jdbc.Driver"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.SQLException"%>
@@ -83,12 +84,8 @@ Connection conn = null;
 Statement stmt = null;
 ResultSet rs = null;
 try {
-	DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-	conn = DriverManager.getConnection(
-			"jdbc:mysql://localhost:3306/vcz",
-			"vcz",
-			"VcZpaSSwORd"
-			);
+	conn = JDBC.getConnection();
+	
 	stmt = conn.createStatement();
 	StringBuilder sql = new StringBuilder();
 	sql.append("SELECT topic_id ");
@@ -111,15 +108,7 @@ catch(SQLException e) {
 	e.printStackTrace();
 }
 finally {
-	if(rs!=null) {
-		rs.close();
-	}
-	if(stmt!=null) {
-		stmt.close();
-	}
-	if(conn!=null) {
-		conn.close();
-	}
+	JDBC.release(conn, stmt, rs);
 }
 
 

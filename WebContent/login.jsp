@@ -5,6 +5,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>login</title>
+<script type="text/javascript">
+	function changeimg(){
+		
+		document.getElementById("img").src="CAPTCHA?" + new Date().getMilliseconds();
+	}
+</script>
 </head>
 <body>
 <jsp:include page="WEB-INF/head.jsp"></jsp:include>
@@ -28,7 +34,7 @@ if(isLogin) {
   	</div>
   	<div class="form-group">
 	    <div class="col-sm-10">
-    		<img src="CAPTCHA" />
+    		<img src="CAPTCHA" style="cursor: pointer;" onclick="changeimg();" id="img"/>
     	 </div>
   	</div>
   	<div class="form-group">

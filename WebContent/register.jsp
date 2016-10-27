@@ -1,3 +1,4 @@
+<%@page import="util.JDBC"%>
 <%@page import="util.MD5"%>
 <%@page import="rule.Nickname"%>
 <%@page import="rule.Password"%>
@@ -19,6 +20,12 @@ if("GET".equals(request.getMethod())) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>register</title>
+<script type="text/javascript">
+	function changeimg(){
+		
+		document.getElementById("img").src="CAPTCHA?" + new Date().getMilliseconds();
+	}
+</script>
 </head>
 <body>
 <jsp:include page="WEB-INF/head.jsp"></jsp:include>
@@ -52,7 +59,7 @@ if(isLogin) {
   	</div>
   	<div class="form-group">
 	    <div class="col-sm-10">
-    		<img src="CAPTCHA" />
+    		<img src="CAPTCHA" style="cursor: pointer;" onclick="changeimg();" id="img"/>
     	 </div>
   	</div>
   	<div class="form-group">
@@ -107,12 +114,8 @@ if("POST".equals(request.getMethod())) {
 		ResultSet rs = null;
 		
 		try {
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/vcz",
-					"vcz",
-					"VcZpaSSwORd"
-					);
+			conn = JDBC.getConnection();
+					
 			stmt = conn.createStatement();
 			
 			StringBuilder sql = new StringBuilder();
@@ -140,15 +143,7 @@ if("POST".equals(request.getMethod())) {
 			response.sendError(404);
 		}
 		finally {
-			if(rs!=null) {
-				rs.close();
-			}
-			if(stmt!=null) {
-				stmt.close();
-			}
-			if(conn!=null) {
-				conn.close();
-			}
+			JDBC.release(conn, stmt, rs);
 		}
 		
 	}
