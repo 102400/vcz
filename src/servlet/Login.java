@@ -15,8 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.UserDAO;
 import rule.VerifySource;
+import util.JDBC;
 import util.MD5;
+import vo.User;
 
 public class Login extends HttpServlet {
 
@@ -31,7 +34,6 @@ public class Login extends HttpServlet {
 		
 		request.setCharacterEncoding("utf-8");
 		
-//		final String SESSION_ID;
 		final String CAPTCHA;
 		
 		HttpSession session = request.getSession();
@@ -49,9 +51,6 @@ public class Login extends HttpServlet {
 		
 		CAPTCHA = (String)session.getAttribute("CAPTCHA");
 		
-		//修改
-//		final String R_USERNAME = "root";
-//		final String R_PASSWORD = "123456";
 		
 		boolean isEmail = false;
 		
@@ -66,6 +65,7 @@ public class Login extends HttpServlet {
 		
 		//验证码验证
 		if(!captcha.equals(CAPTCHA)) {
+//			System.out.println("!CAPTCHA");
 			response.sendRedirect("/login");  //验证码未通过
 			return;
 		}
@@ -77,71 +77,25 @@ public class Login extends HttpServlet {
 			}
 		}
 		
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
+		User user = new User();
+		UserDAO userdao = new UserDAO();
 		
-		try {
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/vcz",
-					"vcz",
-					"VcZpaSSwORd"
-					);
-			stmt = conn.createStatement();
-			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT user_nickname,user_id ");
-			sql.append("FROM users ");
-			sql.append("WHERE ");
-			if(isEmail) {
-				sql.append("user_email = '" + username + "' ");
-			}
-			else {
-				sql.append("user_name = '" + username + "' ");
-			}
-			sql.append("AND user_password_md5 = '" + password + "';");
-			
-			rs = stmt.executeQuery(sql.toString());
-
-			if(rs.next()) {
-				nickname = rs.getString("user_nickname");
-				user_id = rs.getInt("user_id");
-			}
-			else{
-				response.sendRedirect("/login");  //用户名或者密码不通过
-			}
-			
+		user.setUserPasswordMd5(password);
+		if(isEmail) {
+			user.setUserEmail(username);
+			user = userdao.findUserByEmailAndPassword(user);
 		}
-		catch(SQLException e) {
-			e.printStackTrace();
-			response.sendError(404);
+		else {
+			user.setUserName(username);
+			user = userdao.findUserByNameAndPassword(user);
 		}
-		finally {
-			if(rs!=null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(stmt!=null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(conn!=null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+		
+		if(user==null) {
+			response.sendRedirect("/login");  //用户名或者密码不通过
+			return;
 		}
+		nickname = user.getUserNickname();
+		user_id = user.getUserID();
 		
 		StringBuilder sb = new StringBuilder();  //简单加密过后的nickname
 		for(char c:nickname.toCharArray()) {
@@ -176,24 +130,6 @@ public class Login extends HttpServlet {
 		
 		
 		response.sendRedirect("/");
-		
-//		log(CAPTCHA);
-//		log(username);
-//		log(password);
-
-//		response.setContentType("text/html");
-//		PrintWriter out = response.getWriter();
-//		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-//		out.println("<HTML>");
-//		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
-//		out.println("  <BODY>");
-//		out.print("    This is ");
-//		out.print(this.getClass());
-//		out.println(", using the POST method");
-//		out.println("  </BODY>");
-//		out.println("</HTML>");
-//		out.flush();
-//		out.close();
 	}
 
 }

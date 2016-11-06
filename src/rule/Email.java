@@ -6,6 +6,7 @@ public class Email {
 	private char[] c_email;
 	
 	private int at_count = 0;  //@计数
+	private int dot_count = 0;  //.计数
 	
 	public Email(String email) {
 		this.email = email;
@@ -26,6 +27,7 @@ public class Email {
 			int temp = c_email[i];
 			if(!((temp>=48&&temp<=57)||(temp>=65&&temp<=90)||(temp>=97&&temp<=122))) {  //不在此范围里
 				if(temp=='.') {
+					dot_count++;
 					continue;
 				}
 				if(temp=='-') {
@@ -42,6 +44,9 @@ public class Email {
 		}
 		
 		if(at_count!=1) {
+			return false;
+		}
+		if(dot_count<1) {
 			return false;
 		}
 		

@@ -113,7 +113,7 @@ request.setAttribute("verify", verify);
         </div>
         
         <!-- 搜索框 -->
-        <form action="search" method="get" class="navbar-form navbar-left" role="search">
+        <form action="/search" method="get" class="navbar-form navbar-left" role="search">
 	        <div class="form-group">
 	        	<input type="hidden" name="type" value="topic">
 	        	<input type="text"  name="q" class="form-control" placeholder="Search">
