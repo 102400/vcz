@@ -137,6 +137,10 @@ if("POST".equals(request.getMethod())) {
 			sql.append("); ");
 			
 			stmt.executeUpdate(sql.toString());
+			
+			//response.sendRedirect("/login");
+			request.setAttribute("message", "成功注册,请登录");
+			request.getRequestDispatcher("/login").forward(request, response);
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -150,7 +154,5 @@ if("POST".equals(request.getMethod())) {
 	else {
 		response.sendRedirect("/register");
 	}
-	
-	response.sendRedirect("/login");
 }
 %>

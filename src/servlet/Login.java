@@ -66,8 +66,10 @@ public class Login extends HttpServlet {
 		//验证码验证
 		if(!captcha.equals(CAPTCHA)) {
 //			System.out.println("!CAPTCHA");
-			response.sendRedirect("/login");  //验证码未通过
-			return;
+//			response.sendRedirect("/login");  //验证码未通过
+//			return;
+			request.setAttribute("message", "验证码未通过");
+			request.getRequestDispatcher("/login").forward(request, response);
 		}
 		
 		for(char c:username.toCharArray()) {
@@ -91,8 +93,10 @@ public class Login extends HttpServlet {
 		}
 		
 		if(user==null) {
-			response.sendRedirect("/login");  //用户名或者密码不通过
-			return;
+//			response.sendRedirect("/login");  //用户名或者密码不通过
+//			return;
+			request.setAttribute("message", "用户名或者密码未通过");
+			request.getRequestDispatcher("/login").forward(request, response);
 		}
 		nickname = user.getUserNickname();
 		user_id = user.getUserID();

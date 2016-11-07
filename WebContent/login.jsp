@@ -20,6 +20,13 @@ boolean isLogin = (boolean)request.getAttribute("isLogin");
 if(isLogin) {
 	response.sendRedirect("/");
 }
+
+String message = "";
+message = (String)request.getAttribute("message");
+if(message!=null) {
+	out.println("<div style=\"color:#F00\">" + message + "</div>");
+}
+//request.setAttribute("message", null);
 %>
  <form action="Login" method="post" class="form-horizontal" role="form">
     <div class="form-group">

@@ -125,6 +125,8 @@ else if("POST".equals(request.getMethod())) {
 		anonymous = true;
 	}
 	
+	synchronized(this) {
+	
 	Connection conn = null;
 	Statement stmt = null;
 	ResultSet rs = null;
@@ -216,6 +218,8 @@ else if("POST".equals(request.getMethod())) {
 	}
 	
 	response.sendRedirect(request.getRequestURL() + "");
+	
+	}
 
 }
 %>

@@ -54,7 +54,30 @@ try {
 <jsp:include page="WEB-INF/head.jsp"></jsp:include>
 	<h4><a href="/topic/<%=parent_id %>"><%=parent_name %></a></h4>
 	<h2>&nbsp;|----<%=topic_name %><!-- (create time:<%=create_time %>) --></h2>
-
+	<%
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * ");
+		sql.append("FROM topicfollowers ");
+		sql.append("WHERE user_id = " + request.getAttribute("user_id") + " ");
+		sql.append("AND topic_id = " + topic_id);
+		rs = stmt.executeQuery(sql.toString());
+		if(rs.next()) {  //已关注
+	%>
+	<form action="/FollowTopic" method="post" >
+		<input type="hidden" name="f" value="unfollow">
+		<input type="hidden" name="topic_id" value="<%=topic_id %>">
+		<button type="submit" class="btn btn-default">取消关注</button>
+	</form>
+	<% 
+		} else {  //未关注
+	%>
+		<form action="/FollowTopic" method="post" >
+			<input type="hidden" name="f" value="follow">
+			<input type="hidden" name="topic_id" value="<%=topic_id %>">
+			<button type="submit" class="btn btn-default">关注</button>
+		</form>
+	<%} %>
+	
 	<table class="table table-hover table-condensed">
 	<tr>
 	<!-- 
