@@ -28,6 +28,8 @@
 </div>
 <br />
 <%
+boolean isLogin = (boolean)request.getAttribute("isLogin");
+if(isLogin) {
 int user_id = (int)request.getAttribute("user_id");
 String verify = (String)request.getAttribute("verify");
 String str_verify_source = VerifySource.get(user_id + "");
@@ -86,6 +88,7 @@ finally {
  </table>
  <h5>共关注<%=topic_count %>个话题</h5>
  </div>
+<%} %>
 topic.jsp
 </body>
 </html>
