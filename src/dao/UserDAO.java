@@ -11,6 +11,66 @@ import vo.User;
 
 public class UserDAO {
 	
+	public boolean isUserNameExists(User user) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = JDBC.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT user_id ");
+			sql.append("FROM users ");
+			sql.append("WHERE user_name = ? ");
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, user.getUserName());
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				return true;  //user_name存在
+			}
+			else {
+				return false;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		finally {
+			JDBC.release(conn, stmt, rs);
+		}
+	}
+	
+	public boolean isUserEmailExists(User user) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = JDBC.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT user_id ");
+			sql.append("FROM users ");
+			sql.append("WHERE user_email = ? ");
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, user.getUserEmail());
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				return true;  //user_name存在
+			}
+			else {
+				return false;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		finally {
+			JDBC.release(conn, stmt, rs);
+		}
+	}
+	
 	/**
 	 * @return if {@code user} is found then return {@code user}(include nickname,id)
 	 * 				 else return null.

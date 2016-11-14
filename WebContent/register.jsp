@@ -21,8 +21,88 @@ if("GET".equals(request.getMethod())) {
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>register</title>
 <script type="text/javascript">
+var usernameOK = false;
+var emailOK = false;
+var xmlHttpRequest = new XMLHttpRequest();
+
+	function isFormOK() {
+		if(usernameOK&&emailOK) {
+			return true;
+		}
+		else {
+			var msg = document.getElementById("submit_msg");
+			msg.innerHTML = "请输入正确的信息!";
+			return false;
+		}
+	}
+
+	function checkUserNameExists() {
+	    var msg = document.getElementById("username_msg");
+	    var user = document.getElementById("username");
+	    if(user.value=="") {
+	        msg.innerHTML = "username不能为空";
+	        //user.focus();
+	        return;
+	    }
+	    var url = "/checkusername";
+	    var param = "username=" + encodeURIComponent(user.value);
+	    xmlHttpRequest.onreadystatechange = userNameCallBack;
+	    xmlHttpRequest.open("POST",url,true);
+	    xmlHttpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	    xmlHttpRequest.send(param);
+	}
+	
+	function userNameCallBack() {
+	    var msg = document.getElementById("username_msg");
+	    if(xmlHttpRequest.readyState==4) {
+	        if(xmlHttpRequest.status==200) {
+	            var data = xmlHttpRequest.responseText;
+	            if(data=="true") {
+	                msg.innerHTML = "username已经存在!";
+	                document.getElementById("username").select();
+	            }
+	            else {
+	                msg.innerHTML = "OK!";
+	                usernameOK = true;
+	            }
+	        }
+	    }
+	}
+	
+	function checkUserEmailExists() {
+	    var msg = document.getElementById("email_msg");
+	    var user = document.getElementById("email");
+	    if(user.value=="") {
+	        msg.innerHTML = "email不能为空";
+	        //user.focus();
+	        return;
+	    }
+	    var url = "/checkuseremail";
+	    var param = "email=" + encodeURIComponent(user.value);
+	    xmlHttpRequest.onreadystatechange = userEmailCallBack;
+	    xmlHttpRequest.open("POST",url,true);
+	    xmlHttpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	    xmlHttpRequest.send(param);
+	}
+	
+	function userEmailCallBack() {
+	    var msg = document.getElementById("email_msg");
+	    if(xmlHttpRequest.readyState==4) {
+	        if(xmlHttpRequest.status==200) {
+	            var data = xmlHttpRequest.responseText;
+	            if(data=="true") {
+	                msg.innerHTML = "email已经存在!";
+	                document.getElementById("email").select();
+	            }
+	            else {
+	                msg.innerHTML = "OK!";
+	                emailOK = true;
+	            }
+	        }
+	    }
+	}
+
 	function changeimg(){
-		
 		document.getElementById("img").src="CAPTCHA?" + new Date().getMilliseconds();
 	}
 </script>
@@ -36,7 +116,7 @@ if(isLogin) {
 }
 
 %>
-<form action="register" method="post" class="form-horizontal" role="form">
+<form onsubmit="return isFormOK()" action="register" method="post" class="form-horizontal" role="form">
     <div class="form-group">
 	    <div class="col-sm-10">
 	    	<input type="text" name="nickname" class="form-control" placeholder="Nickname(length:1-16)" />
@@ -44,12 +124,14 @@ if(isLogin) {
 	</div>
     <div class="form-group">
 	    <div class="col-sm-10">
-	    	<input type="text" name="username" class="form-control" placeholder="Username(length:6-16)" />
+	    	<input type="text" id="username" name="username" class="form-control" placeholder="Username(length:6-16)" onblur="checkUserNameExists()" />
+	    	<span style="color:#F00" id="username_msg"></span>
 	    </div>
 	</div>
 	<div class="form-group">
 	    <div class="col-sm-10">
-	    	<input type="text" name="email" class="form-control" placeholder="email address(length:5+)" />
+	    	<input type="text" id="email" name="email" class="form-control" placeholder="email address(length:5+)" onblur="checkUserEmailExists()" />
+	    	<span style="color:#F00" id="email_msg"></span>
 	    </div>
 	</div>
 	<div class="form-group">
@@ -70,6 +152,7 @@ if(isLogin) {
     <div class="form-group">
     <div class="col-sm-10">
     	<button type="submit" class="btn btn-default">register</button>
+    	<span style="color:#F00" id="submit_msg"></span>
 	</div>
 	</div>
     </form>
