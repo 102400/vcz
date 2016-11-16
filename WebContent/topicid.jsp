@@ -1,3 +1,4 @@
+<%@page import="util.HTMLEscape"%>
 <%@page import="util.JDBC"%>
 <%@page import="com.mysql.jdbc.Driver"%>
 <%@page import="java.sql.DriverManager"%>
@@ -36,13 +37,17 @@ try {
 	String create_time = "";
 	
 	rs = stmt.executeQuery("SELECT a.topic_id,a.topic_name,a.create_time,a.topic_parent AS parent_id,b.topic_name AS parent_name FROM topics AS a,topics AS b WHERE a.topic_id = " + topic + " AND a.topic_parent = b.topic_id;");
-	while(rs.next()) {
+	if(rs.next()) {
 		topic_id = rs.getInt("topic_id");
 		topic_name = rs.getString("topic_name");
 		create_time = rs.getString("create_time");
 		parent_id = rs.getInt("parent_id");
 		parent_name = rs.getString("parent_name");
 	}
+	else {
+		response.sendError(404);
+	}
+	topic_name = new HTMLEscape(topic_name).escape();
 	%>
 <!DOCTYPE html">
 <html>

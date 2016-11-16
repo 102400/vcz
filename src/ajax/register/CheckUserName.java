@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.UserDAO;
+import rule.Email;
+import rule.Username;
 import vo.User;
 
 @WebServlet("/checkusername")
@@ -31,7 +33,18 @@ public class CheckUserName extends HttpServlet {
 		String username = requset.getParameter("username");
 		User user = new User();
 		user.setUserName(username);
-		out.print(new UserDAO().isUserNameExists(user));
+		
+		String s = "";
+		boolean legal = new Username(username).isLegal();
+		boolean exists = new UserDAO().isUserNameExists(user);
+		if(legal) {
+			s = s + "legal,";
+		}
+		if(exists) {
+			s = s + "exists";
+		}
+		out.print(s);
+		
 	}
 
 }

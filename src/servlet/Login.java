@@ -121,6 +121,7 @@ public class Login extends HttpServlet {
 		Cookie cookie_user_id = new Cookie("user_id", user_id + "");
 		
 		Cookie verify = new Cookie("verify",MD5.code(str_verify_source));  //加密过后的 登录验证cookie
+		verify.setHttpOnly(true);
 		
 		if("on".equals(remember_me)) {
 			verify.setMaxAge(60*60*24*42);  //42天

@@ -57,13 +57,18 @@ var xmlHttpRequest = new XMLHttpRequest();
 	    if(xmlHttpRequest.readyState==4) {
 	        if(xmlHttpRequest.status==200) {
 	            var data = xmlHttpRequest.responseText;
-	            if(data=="true") {
-	                msg.innerHTML = "username已经存在!";
-	                document.getElementById("username").select();
+	            if(data.split(",")[0]=="legal") {
+	                if(data.split(",")[1]=="exists") {
+	                	msg.innerHTML = "username已经存在!";
+	 	                document.getElementById("username").select();
+	                }
+	                else {
+	                	msg.innerHTML = "OK!";
+		                emailOK = true;
+	                }
 	            }
 	            else {
-	                msg.innerHTML = "OK!";
-	                usernameOK = true;
+	                msg.innerHTML = "username不合规则";
 	            }
 	        }
 	    }
@@ -90,13 +95,18 @@ var xmlHttpRequest = new XMLHttpRequest();
 	    if(xmlHttpRequest.readyState==4) {
 	        if(xmlHttpRequest.status==200) {
 	            var data = xmlHttpRequest.responseText;
-	            if(data=="true") {
-	                msg.innerHTML = "email已经存在!";
-	                document.getElementById("email").select();
+	            if(data.split(",")[0]=="legal") {
+	                if(data.split(",")[1]=="exists") {
+	                	msg.innerHTML = "email已经存在!";
+	 	                document.getElementById("email").select();
+	                }
+	                else {
+	                	msg.innerHTML = "OK!";
+		                emailOK = true;
+	                }
 	            }
 	            else {
-	                msg.innerHTML = "OK!";
-	                emailOK = true;
+	                msg.innerHTML = "email不合规则";
 	            }
 	        }
 	    }

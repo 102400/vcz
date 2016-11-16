@@ -1,4 +1,9 @@
 1
+	20161116a
+		注册页面实时判断username,email是否符合规则
+		增加输出检查防御XSS
+		setHttpOnly
+
 	20161114a
 		注册页面实时检查username,email是否存在
 

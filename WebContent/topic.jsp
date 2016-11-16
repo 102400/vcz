@@ -1,3 +1,4 @@
+<%@page import="util.HTMLEscape"%>
 <%@page import="rule.VerifySource"%>
 <%@page import="util.MD5"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -67,6 +68,7 @@ try {
 	while(rs.next()) {
 		int topic_id = rs.getInt("topic_id");
 		String topic_name = rs.getString("topic_name");
+		topic_name = new HTMLEscape(topic_name).escape();
 		topic_count++;
 		%>
 		<tr>

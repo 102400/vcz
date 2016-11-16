@@ -1,3 +1,4 @@
+<%@page import="util.HTMLEscape"%>
 <%@page import="util.JDBC"%>
 <%@page import="rule.VerifySource"%>
 <%@page import="util.MD5"%>
@@ -77,9 +78,11 @@ try {
 		topic_ids[4] = rs.getInt("topic4_id");
 	}
 	
+	question_name = new HTMLEscape(question_name).escape();
 	//question_content 处理格式
-	question_content = question_content.replaceAll(" ", "&nbsp;");
-	question_content = question_content.replaceAll("\n", "<br />");
+	//question_content = question_content.replaceAll(" ", "&nbsp;");
+	//question_content = question_content.replaceAll("\n", "<br />");
+	question_content = new HTMLEscape(question_content).escape();
 	
 	sql = new StringBuilder();
 	sql.append("SELECT t.topic_name ");
@@ -153,6 +156,7 @@ topic:
 <% 
 for(int i=0;i<topic_names.length;i++) {
 	if(topic_names[i]!=null) { 
+		topic_names[i] = new HTMLEscape(topic_names[i]).escape();
 %>
 <button type="button" class="btn btn-default"><a href="/topic/<%=topic_ids[i] %>"><%=topic_names[i] %></a></button>
 <%
@@ -212,8 +216,9 @@ while(rs.next()) {
 	answer_create_time = rs.getString("create_time");
 	
 	//对answer_content进行换行处理
-	answer_content = answer_content.replaceAll(" ", "&nbsp;");
-	answer_content = answer_content.replaceAll("\n", "<br />");
+	//answer_content = answer_content.replaceAll(" ", "&nbsp;");
+	//answer_content = answer_content.replaceAll("\n", "<br />");
+	answer_content = new HTMLEscape(answer_content).escape();
 	System.out.println(answer_content);
 	
 	%>

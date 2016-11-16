@@ -1,3 +1,4 @@
+<%@page import="util.HTMLEscape"%>
 <%@page import="util.JDBC"%>
 <%@page import="com.mysql.jdbc.Driver"%>
 <%@page import="java.sql.DriverManager"%>
@@ -73,6 +74,8 @@ try {
 		String topic_name = rs.getString("topic_name");
 		int parent_id = rs.getInt("parent_id");
 		String parent_name = rs.getString("parent_name");
+		
+		topic_name = new HTMLEscape(topic_name).escape();
 		%>
 		<tr>
 		<th><a href="/topic/<%=topic_id %>" target="_blank"><%=topic_id %></a></th>
