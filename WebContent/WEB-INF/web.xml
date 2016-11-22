@@ -46,6 +46,10 @@
     <jsp-file>/topicid.jsp</jsp-file>
   </servlet>
   <servlet>
+    <servlet-name>chattopicid</servlet-name>
+    <jsp-file>/chattopicid.jsp</jsp-file>
+  </servlet>
+  <servlet>
     <servlet-name>topics</servlet-name>
     <jsp-file>/topics.jsp</jsp-file>
   </servlet>
@@ -108,6 +112,10 @@
   <servlet-mapping>
     <servlet-name>topicid</servlet-name>
     <url-pattern>/topic/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>chattopicid</servlet-name>
+    <url-pattern>/chat/topic/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>topics</servlet-name>

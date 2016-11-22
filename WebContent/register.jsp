@@ -64,7 +64,7 @@ var xmlHttpRequest = new XMLHttpRequest();
 	                }
 	                else {
 	                	msg.innerHTML = "OK!";
-		                emailOK = true;
+	                	usernameOK = true;
 	                }
 	            }
 	            else {

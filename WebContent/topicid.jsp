@@ -54,11 +54,26 @@ try {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><%=topic_name %></title>
+<style>
+.leftfloat {
+	float: left;
+}
+.rightfloat {
+	float: right;
+}
+.clearboth {
+	clear:both;
+}
+</style>
 </head>
 <body>
 <jsp:include page="WEB-INF/head.jsp"></jsp:include>
+<div>
+	<div class="leftfloat">
 	<h4><a href="/topic/<%=parent_id %>"><%=parent_name %></a></h4>
 	<h2>&nbsp;|----<%=topic_name %><!-- (create time:<%=create_time %>) --></h2>
+	</div>
+	<div class="rightfloat">
 	<%
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * ");
@@ -82,7 +97,9 @@ try {
 			<button type="submit" class="btn btn-default">关注</button>
 		</form>
 	<%} %>
-	
+	<a href="/chat/topic/<%=topic_id %>"><button type="button" class="btn btn-default">即时聊天</button></a>
+	</div>
+</div>
 	<table class="table table-hover table-condensed">
 	<tr>
 	<!-- 
@@ -103,6 +120,7 @@ try {
 		//String topic_name = rs.getString("topic_name");
 		int question_id = rs.getInt("question_id");
 		String question_name = rs.getString("question_name");
+		question_name = new HTMLEscape(question_name).escape();
 		%>
 		<tr>
 		<th><a href="/question/<%=question_id %>" target="_blank"><%=question_id %></a></th>

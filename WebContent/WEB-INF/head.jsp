@@ -109,7 +109,7 @@ request.setAttribute("verify", verify);
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" class="navbar-brand">Vatcore</a>
+            <a href="/" class="navbar-brand">VCZ</a>
         </div>
         
         <!-- 搜索框 -->

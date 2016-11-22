@@ -8,6 +8,6 @@
 </head>
 <body>
 <hr />
-© 2016 Vatcore
+© 2016 VCZ
 </body>
 </html>

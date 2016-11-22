@@ -71,6 +71,43 @@ public class UserDAO {
 		}
 	}
 	
+	public User findNickNameByID(User user) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = JDBC.getConnection();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT user_nickname ");
+			sql.append("FROM users ");
+			sql.append("WHERE ");
+			sql.append("user_id =? ;");
+//			System.out.println(sql.toString());
+			
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setInt(1, user.getUserID());
+			rs = stmt.executeQuery();
+
+			if(rs.next()) {
+				user.setUserNickname(rs.getString("user_nickname"));
+			}
+			else{
+				return null;
+			}
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally {
+			JDBC.release(conn, stmt, rs);
+		}
+		return user;
+	}
+	
 	/**
 	 * @return if {@code user} is found then return {@code user}(include nickname,id)
 	 * 				 else return null.
